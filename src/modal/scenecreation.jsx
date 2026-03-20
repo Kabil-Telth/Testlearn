@@ -5,73 +5,68 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 const ThreeScene = () => {
   const mountRef = useRef(null);
 
-  useEffect(() => {
-    // === Scene setup ===
-    const scene = new THREE.Scene();
+ useEffect(() => {
+  const scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(
-      75,  
-      mountRef.current.clientWidth / mountRef.current.clientHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 5;
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    mountRef.current.clientWidth / mountRef.current.clientHeight,
+    0.1,
+    1000
+  );
+  camera.position.z = 5;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(
-      mountRef.current.clientWidth,
-      mountRef.current.clientHeight 
-    );
-    mountRef.current.appendChild(renderer.domElement);
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(
+    mountRef.current.clientWidth,
+    mountRef.current.clientHeight
+  );
+  mountRef.current.appendChild(renderer.domElement);
 
-    // === Add objects ===
-    // const geometry = new THREE.BoxGeometry();
-    // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    // const ground = new THREE.Mesh(geometry, material);
-    // scene.add(ground);
+  // Object
+  const geometry = new THREE.BoxGeometry();
+  const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+  const cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
 
-    // === Animation loop ===
-    const animate = () => {
-      requestAnimationFrame(animate);
-      ground.rotation.x += 0.01;
-      ground.rotation.y += 0.01;
-      renderer.render(scene, camera);
-    };
-    animate();
+  // Light (IMPORTANT for standard material)
+  const light = new THREE.DirectionalLight(0xffffff, 1);
+  light.position.set(5, 5, 5);
+  scene.add(light);
 
-    // === Handle window resize ===
-    const handleResize = () => {
-      const width = mountRef.current.clientWidth;
-      const height = mountRef.current.clientHeight;
-      renderer.setSize(width, height);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    };
-    window.addEventListener("resize", handleResize);
+  // Controls
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
 
-     const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; // smooth motion
-controls.dampingFactor = 0.05;
-controls.screenSpacePanning = false;
-controls.minDistance = 1; // zoom in limit
-controls.maxDistance = 500; // zoom out limit
-controls.maxPolarAngle = Math.PI / 2; // limit vertical rotation (so camera doesn’t go below ground)
+  const animate = () => {
+    requestAnimationFrame(animate);
 
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
 
+    controls.update();
 
-    // === Cleanup on unmount ===
-   return () => {
-  window.removeEventListener("resize", handleResize);
-  if (mountRef.current && renderer.domElement) {
-    mountRef.current.removeChild(renderer.domElement);
-  }
-  controls.update();
+    renderer.render(scene, camera);
+  };
+  animate();
 
-  renderer.dispose(); // clean up GPU memory
-};
+  const handleResize = () => {
+    const width = mountRef.current.clientWidth;
+    const height = mountRef.current.clientHeight;
 
-  }, [])
+    renderer.setSize(width, height);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+  };
 
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    window.removeEventListener("resize", handleResize);
+    controls.dispose();
+    renderer.dispose();
+  };
+}, []);
   return (
     <div
       ref={mountRef}
