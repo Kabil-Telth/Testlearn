@@ -13,6 +13,7 @@ function App() {
   console.log("sixth remote")
   console.log("7th log local")
   console.log("8th local test")
+  console.log("hello from dev bracnh bro")
 
   return (
     <>
