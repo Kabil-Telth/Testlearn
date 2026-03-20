@@ -9,7 +9,7 @@ function App() {
   console.log("againf or checkin")
   console.log("third change amde")
   console.log("fourth local test")
-  console.log("fifth form remote")
+  console.log("fifth from local ")
 
   return (
     <>
