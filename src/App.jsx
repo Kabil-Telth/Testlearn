@@ -12,6 +12,8 @@ function App() {
   console.log("fifth from local ")
   console.log("sixth remote")
   console.log("7th log local")
+  console.log("8th log test")
+  
   return (
     <>
       <ThreeScene />
