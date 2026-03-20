@@ -8,6 +8,7 @@ function App() {
   console.log("pushing commit")
   console.log("againf or checkin")
   console.log("third change amde")
+  console.log("fourth local test")
 
   return (
     <>
