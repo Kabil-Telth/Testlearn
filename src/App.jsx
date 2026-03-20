@@ -11,8 +11,7 @@ function App() {
   console.log("fourth local test")
   console.log("fifth from local ")
   console.log("sixth remote")
-   console.log("7th log test")
-  
+  console.log("7th log local")
   return (
     <>
       <ThreeScene />
