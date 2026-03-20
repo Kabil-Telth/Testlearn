@@ -10,7 +10,7 @@ function App() {
   console.log("third change amde")
   console.log("fourth local test")
   console.log("fifth from local ")
-
+  console.log("sixth remote")
   return (
     <>
       <ThreeScene />
