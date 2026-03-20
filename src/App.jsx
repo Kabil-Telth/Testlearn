@@ -7,7 +7,7 @@ function App() {
   const [count, setCount] = useState(0)
   console.log("pushing commit")
   console.log("againf or checkin")
-  console.log("third change")
+  console.log("third change amde")
 
   return (
     <>
